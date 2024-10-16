@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmação de Presença e Fraldas</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Estilo para o fundo lilás do título */
+        .header-background {
+            background-color: #E6E6FA; /* Cor lilás */
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Estilo para o fundo lilás na parte inferior */
+        .footer-background {
+            background-color: #E6E6FA; /* Cor lilás */
+            padding: 60px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        /* Centralizar o conteúdo e estilizar as imagens */
+        .diaper-size {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .diaper-size img {
+            width: 150px;
+            height: 150px;
+        }
+
+        .counter {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        /* Centralizar a seção de imagens */
+        .diaper-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Espaçamento entre as colunas */
+            flex-wrap: wrap; /* Permite que os itens fiquem em duas linhas se necessário */
+        }
+
+        /* Estilo para o botão de reset */
+        .btn-reset {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabeçalho com fundo lilás -->
+    <div class="header-background">
+        <h1 class="masthead-heading text-uppercase mb-0">Qual tamanho de Fraldas você pretende me presentear ?</h1>
+       <!-- <h1>Qual tamanho de Fraldas você pretende me presentear ?</h1>-->
+    </div>
+
+    <div class="container">
+        <!-- Seção das imagens e botões centralizados -->
+        <div class="row text-center diaper-container">
+            <!-- Tamanho P -->
+            <div class="diaper-size">
+                <img src="assets/img/portfolio/P.png" alt="Tamanho P">
+                <div class="counter" id="counter-p">0 pacotes</div>
+                <button class="btn btn-primary" onclick="confirmDiaper('P')">Escolher Tamanho P</button>
+            </div>
+
+            <!-- Tamanho M -->
+            <div class="diaper-size">
+                <img src="assets/img/portfolio/M.png" alt="Tamanho M">
+                <div class="counter" id="counter-m">0 pacotes</div>
+                <button class="btn btn-primary" onclick="confirmDiaper('M')">Escolher Tamanho M</button>
+            </div>
+
+            <!-- Tamanho G -->
+            <div class="diaper-size">
+                <img src="assets/img/portfolio/G.png" alt="Tamanho G">
+                <div class="counter" id="counter-g">0 pacotes</div>
+                <button class="btn btn-primary" onclick="confirmDiaper('G')">Escolher Tamanho G</button>
+            </div>
+
+            <!-- Tamanho GG -->
+            <div class="diaper-size">
+                <img src="assets/img/portfolio/GG.png" alt="Tamanho GG">
+                <div class="counter" id="counter-gg">0 pacotes</div>
+                <button class="btn btn-primary" onclick="confirmDiaper('GG')">Escolher Tamanho GG</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rodapé com fundo lilás e contador -->
+    <div class="footer-background">
+        <h3>Total de Pacotes Confirmados: <span id="total-counter">0</span></h3>
+        <button class="btn btn-danger btn-reset" onclick="window.location.href='index.html'">VOLTAR</button>
+    </div>
+   <!-- <center><video controls autoplay loop class="video-background">
+        <source src="assets/img/portfolio/cha.mp4"  type="video/mp4"></center>
+    </video>-->
+
+    <!-- JavaScript -->
+    <script>
+        // Função para carregar os contadores ao iniciar a página
+        document.addEventListener("DOMContentLoaded", function() {
+            loadCounters();
+        });
+
+        function loadCounters() {
+            const counters = getCounters();
+            document.getElementById('counter-p').innerText = counters.P + " pacotes";
+            document.getElementById('counter-m').innerText = counters.M + " pacotes";
+            document.getElementById('counter-g').innerText = counters.G + " pacotes";
+            document.getElementById('counter-gg').innerText = counters.GG + " pacotes";
+            document.getElementById('total-counter').innerText = counters.P + counters.M + counters.G + counters.GG;
+        }
+
+        function getCounters() {
+            return JSON.parse(localStorage.getItem('diaperCounters')) || { P: 0, M: 0, G: 0, GG: 0 };
+        }
+
+        function updateCounters(counters) {
+            localStorage.setItem('diaperCounters', JSON.stringify(counters));
+            loadCounters();
+        }
+
+        function confirmDiaper(size) {
+            const confirmation = confirm("Você dará de presente um pacote de fralda do tamanho " + size + "?");
+            if (confirmation) {
+                const counters = getCounters();
+                counters[size]++;
+                updateCounters(counters);
+            }
+        }
+
+        function resetCounters() {
+            if (confirm("Tem certeza que deseja resetar todos os contadores?")) {
+                const initialCounters = { P: 0, M: 0, G: 0, GG: 0 };
+                updateCounters(initialCounters);
+                alert("Os contadores foram resetados!");
+            }
+        }
+    </script>
+</body>
+</html>

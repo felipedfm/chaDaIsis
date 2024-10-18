@@ -13,43 +13,7 @@ window.addEventListener('DOMContentLoaded', event => {
         loadCounters();
     });
 
-    function loadCounters() {
-        const counters = getCounters();
-        document.getElementById('counter-p').innerText = counters.P + " pacotes";
-        document.getElementById('counter-m').innerText = counters.M + " pacotes";
-        document.getElementById('counter-g').innerText = counters.G + " pacotes";
-        document.getElementById('counter-gg').innerText = counters.GG + " pacotes";
-        document.getElementById('total-counter').innerText = counters.P + counters.M + counters.G + counters.GG;
-    }
-
-    function getCounters() {
-        return JSON.parse(localStorage.getItem('diaperCounters')) || { P: 0, M: 0, G: 0, GG: 0 };
-    }
-
-    function updateCounters(counters) {
-        localStorage.setItem('diaperCounters', JSON.stringify(counters));
-        loadCounters();
-    }
-
-    function confirmDiaper(size) {
-        const confirmation = confirm("Você dará de presente um pacote de fralda do tamanho " + size + "?");
-        if (confirmation) {
-            const counters = getCounters();
-            counters[size]++;
-            updateCounters(counters);
-            alert(`Você confirmou o presente de um pacote de fralda do tamanho ${size}! Muito obrigada!`);
-
-        }
-    }
-
-    function resetCounters() {
-        if (confirm("Tem certeza que deseja resetar todos os contadores?")) {
-            const initialCounters = { P: 0, M: 0, G: 0, GG: 0 };
-            updateCounters(initialCounters);
-            alert("Os contadores foram resetados!");
-        }
-    }
-    // Navbar shrink function
+       // Navbar shrink function
     var navbarShrink = function () {
         const navbarCollapsible = document.body.querySelector('#mainNav');
         if (!navbarCollapsible) {

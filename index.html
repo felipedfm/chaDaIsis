@@ -496,17 +496,48 @@
 
 
 
-        <script> 
+        <script> function loadCounters() {
+            const counters = getCounters();
+            document.getElementById('counter-p').innerText = counters.P + " pacotes";
+            document.getElementById('counter-m').innerText = counters.M + " pacotes";
+            document.getElementById('counter-g').innerText = counters.G + " pacotes";
+            document.getElementById('counter-gg').innerText = counters.GG + " pacotes";
+            document.getElementById('total-counter').innerText = counters.P + counters.M + counters.G + counters.GG;
+        }
     
-        // function getCounters() {
-        //     return JSON.parse(localStorage.getItem('diaperCounters')) || { P: 0, M: 0, G: 0, GG: 0 };
-        // }
+        function getCounters() {
+            return JSON.parse(localStorage.getItem('diaperCounters')) || { P: 0, M: 0, G: 0, GG: 0 };
+        }
     
+
+        function updateTotalCounter() {
+        var sizes = ['p', 'm', 'g', 'gg'];
+        let total = 0;
+  
+        sizes.forEach(size => {
+            total += parseInt(document.getElementById('counter-' + size).textContent) || 0;
+        });
+  
+        document.getElementById('total-counter').textContent = total;
+    }
+
         // function updateCounters(counters) {
         //     localStorage.setItem('diaperCounters', JSON.stringify(counters));
         //     loadCounters();
         // }
-    
+        function confirmDiaper(size) {
+        const confirmation = confirm(`Você dará de presente um pacote de fralda do tamanho ${size}?`);
+        if (confirmation) {
+            // Atualizar o contador no Firebase
+            var ref = database.ref('diapers/' + size);
+            ref.transaction(function(count) {
+                return (count || 0) + 1;
+            });
+  
+            // Mostrar pop-up de agradecimento
+            alert(`Muito obrigado! Você confirmou o presente de um pacote de fralda do tamanho ${size}!`);
+        }
+    }
         // function confirmDiaper(size) {
         //     const confirmation = confirm("Você dará de presente um pacote de fralda do tamanho " + size + "?");
         //     if (confirmation) {
@@ -564,33 +595,11 @@
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
 
-
-  function loadCounters() {
-            const counters = getCounters();
-            document.getElementById('counter-p').innerText = counters.P + " pacotes";
-            document.getElementById('counter-m').innerText = counters.M + " pacotes";
-            document.getElementById('counter-g').innerText = counters.G + " pacotes";
-            document.getElementById('counter-gg').innerText = counters.GG + " pacotes";
-            document.getElementById('total-counter').innerText = counters.P + counters.M + counters.G + counters.GG;
-        }
-
     // Referência ao banco de dados
 var database = firebase.database();
   
     // Função de confirmação de fraldas
-    function confirmDiaper(size) {
-        const confirmation = confirm(`Você dará de presente um pacote de fralda do tamanho ${size}?`);
-        if (confirmation) {
-            // Atualizar o contador no Firebase
-            var ref = database.ref('diapers/' + size);
-            ref.transaction(function(count) {
-                return (count || 0) + 1;
-            });
-  
-            // Mostrar pop-up de agradecimento
-            alert(`Muito obrigado! Você confirmou o presente de um pacote de fralda do tamanho ${size}!`);
-        }
-    }
+    
   
     // Carregar os contadores ao carregar a página
     document.addEventListener('DOMContentLoaded', function() {
@@ -605,16 +614,7 @@ var database = firebase.database();
     });
   
     // Função para atualizar o contador total
-    function updateTotalCounter() {
-        var sizes = ['p', 'm', 'g', 'gg'];
-        let total = 0;
-  
-        sizes.forEach(size => {
-            total += parseInt(document.getElementById('counter-' + size).textContent) || 0;
-        });
-  
-        document.getElementById('total-counter').textContent = total;
-    }
+    
   </script>
 
 

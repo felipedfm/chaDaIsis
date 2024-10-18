@@ -15,117 +15,9 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
+    
     <!-- Firebase Configuration -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-        import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAkHCwenPip12BQkCpy4IwnAlQboGyGg7I",
-            authDomain: "chadaisis.firebaseapp.com",
-            databaseURL: "https://chadaisis-default-rtdb.firebaseio.com",
-            projectId: "chadaisis",
-            storageBucket: "chadaisis.appspot.com",
-            messagingSenderId: "687075306152",
-            appId: "1:687075306152:web:9391246c0993166a16709d",
-            measurementId: "G-7DYGVP0DYM"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-
-        // Load counters from Firebase
-        function loadCounters() {
-            const countersRef = ref(db, 'diaperCounters');
-            onValue(countersRef, (snapshot) => {
-                const data = snapshot.val() || { P: 0, M: 0, G: 0, GG: 0 };
-                document.getElementById('counter-p').innerText = data.P + " pacotes";
-                document.getElementById('counter-m').innerText = data.M + " pacotes";
-                document.getElementById('counter-g').innerText = data.G + " pacotes";
-                document.getElementById('counter-gg').innerText = data.GG + " pacotes";
-                document.getElementById('total-counter').innerText = data.P + data.M + data.G + data.GG;
-            });
-        }
-
-        // Update counters in Firebase
-        function updateCounters(counters) {
-            set(ref(db, 'diaperCounters'), counters);
-        }
-
-        // Confirm diaper selection
-        function confirmDiaper(size) {
-            const confirmation = confirm("Você dará de presente um pacote de fralda do tamanho " + size + "?");
-            if (confirmation) {
-                const counters = getCounters();
-                counters[size]++;
-                updateCounters(counters);
-                alert(`Você confirmou o presente de um pacote de fralda do tamanho ${size}! Muito obrigada!`);
-            }
-        }
-
-        // Reset counters
-        function resetCounters() {
-            if (confirm("Tem certeza que deseja resetar todos os contadores?")) {
-                const initialCounters = { P: 0, M: 0, G: 0, GG: 0 };
-                updateCounters(initialCounters);
-                alert("Os contadores foram resetados!");
-            }
-        }
-
-        // Get counters from local storage (for fallback)
-        function getCounters() {
-            return JSON.parse(localStorage.getItem('diaperCounters')) || { P: 0, M: 0, G: 0, GG: 0 };
-        }
-
-        // Load messages from Firebase
-        function loadMessages() {
-            const messagesRef = ref(db, 'muralMessages');
-            onValue(messagesRef, (snapshot) => {
-                const mural = document.getElementById('mural');
-                mural.innerHTML = '<h4 class="text-center">Pessoas confirmadas:</h4>';
-                const messages = snapshot.val() || [];
-                messages.forEach(function(msg) {
-                    mural.innerHTML += `
-                        <div class="mural-item">
-                            <h5>${msg.name}</h5>
-                            <p>${msg.message}</p>
-                        </div>`;
-                });
-            });
-        }
-
-        // Add message to Firebase
-        function addMessage() {
-            const name = document.getElementById('name').value;
-            const message = document.getElementById('message').value;
-
-            const messagesRef = ref(db, 'muralMessages');
-            get(messagesRef).then((snapshot) => {
-                const messages = snapshot.val() || [];
-                messages.push({ name, message });
-                updateMessages(messages);
-            });
-
-            loadMessages(); // Atualiza o mural
-            document.getElementById('messageForm').reset(); // Limpa o formulário
-        }
-
-        // Update messages in Firebase
-        function updateMessages(messages) {
-            set(ref(db, 'muralMessages'), messages);
-        }
-
-        // Load initial data
-        document.addEventListener("DOMContentLoaded", function() {
-            loadCounters();
-            loadMessages(); // Carregar as mensagens ao carregar a página
-            const form = document.getElementById("messageForm");
-            form.addEventListener("submit", function(event) {
-                event.preventDefault();
-                addMessage();
-            });
-        });
-    </script>
+    
 </head>
 <body id="page-top">
     <!-- Navigation-->
@@ -315,6 +207,124 @@
     <div class="copyright py-4 text-center text-white">
         <p class="text-muted small mb-0">&copy; 2024 - Chá da Ísis. Todos os direitos reservados.</p>
     </div>
+
+    <script>
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+        import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAkHCwenPip12BQkCpy4IwnAlQboGyGg7I",
+            authDomain: "chadaisis.firebaseapp.com",
+            databaseURL: "https://chadaisis-default-rtdb.firebaseio.com",
+            projectId: "chadaisis",
+            storageBucket: "chadaisis.appspot.com",
+            messagingSenderId: "687075306152",
+            appId: "1:687075306152:web:9391246c0993166a16709d",
+            measurementId: "G-7DYGVP0DYM"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Load counters from Firebase
+        function loadCounters() {
+            const countersRef = ref(db, 'diaperCounters');
+            onValue(countersRef, (snapshot) => {
+                const data = snapshot.val() || { P: 0, M: 0, G: 0, GG: 0 };
+                document.getElementById('counter-p').innerText = data.P + " pacotes";
+                document.getElementById('counter-m').innerText = data.M + " pacotes";
+                document.getElementById('counter-g').innerText = data.G + " pacotes";
+                document.getElementById('counter-gg').innerText = data.GG + " pacotes";
+                document.getElementById('total-counter').innerText = data.P + data.M + data.G + data.GG;
+            });
+        }
+
+        // Update counters in Firebase
+        function updateCounters(counters) {
+            set(ref(db, 'diaperCounters'), counters);
+        }
+
+        // Confirm diaper selection
+        window.confirmDiaper = function(size){
+            const confirmation = confirm("Você dará de presente um pacote de fralda do tamanho " + size + "?");
+            if (confirmation) {
+                const counters = getCounters();
+                counters[size]++;
+                updateCounters(counters);
+                alert(`Você confirmou o presente de um pacote de fralda do tamanho ${size}! Muito obrigada!`);
+            }
+        }
+
+        // Reset counters
+        function resetCounters() {
+            if (confirm("Tem certeza que deseja resetar todos os contadores?")) {
+                const initialCounters = { P: 0, M: 0, G: 0, GG: 0 };
+                updateCounters(initialCounters);
+                alert("Os contadores foram resetados!");
+            }
+        }
+
+        // Get counters from local storage (for fallback)
+        function getCounters() {
+            return JSON.parse(localStorage.getItem('diaperCounters')) || { P: 0, M: 0, G: 0, GG: 0 };
+        }
+
+        // Load messages from Firebase
+        function loadMessages() {
+            const messagesRef = ref(db, 'muralMessages');
+            onValue(messagesRef, (snapshot) => {
+                const mural = document.getElementById('mural');
+                mural.innerHTML = '<h4 class="text-center">Pessoas confirmadas:</h4>';
+                const messages = snapshot.val() || [];
+                messages.forEach(function(msg) {
+                    mural.innerHTML += `
+                        <div class="mural-item">
+                            <h5>${msg.name}</h5>
+                            <p>${msg.message}</p>
+                        </div>`;
+                });
+            });
+        }
+
+        // Add message to Firebase
+        function addMessage() {
+            const name = document.getElementById('name').value;
+            const message = document.getElementById('message').value;
+
+            const messagesRef = ref(db, 'muralMessages');
+            get(messagesRef).then((snapshot) => {
+                const messages = snapshot.val() || [];
+                messages.push({ name, message });
+                updateMessages(messages);
+            });
+
+            loadMessages(); // Atualiza o mural
+            document.getElementById('messageForm').reset(); // Limpa o formulário
+        }
+
+        // Update messages in Firebase
+        function updateMessages(messages) {
+            set(ref(db, 'muralMessages'), messages);
+        }
+
+        // Load initial data
+        document.addEventListener("DOMContentLoaded", function() {
+            loadCounters();
+            loadMessages(); // Carregar as mensagens ao carregar a página
+            const form = document.getElementById("messageForm");
+            form.addEventListener("submit", function(event) {
+                event.preventDefault();
+                addMessage();
+            });
+        });
+    </script>
+
+
+
+
+
+
+
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
 </body>

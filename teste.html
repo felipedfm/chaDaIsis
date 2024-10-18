@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mural de Mensagens</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Estilo simples para o formulário e mural */
+        body {
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+
+        .form-container {
+            margin-bottom: 30px;
+        }
+
+        .mural {
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .mural-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .mural-item h5 {
+            margin: 0 0 5px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="text-center">Deixe sua Mensagem no Mural</h1>
+
+        <!-- Formulário para adicionar mensagem -->
+        <div class="form-container">
+            <form id="messageForm">
+                <div class="form-group">
+                    <label for="name">Seu Nome</label>
+                    <input type="text" class="form-control" id="name" placeholder="Digite seu nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Sua Mensagem</label>
+                    <textarea class="form-control" id="message" rows="3" placeholder="Escreva sua mensagem" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
+            </form>
+        </div>
+
+        <!-- Mural para exibir as mensagens -->
+        <div class="mural" id="mural">
+            <h4 class="text-center">Mensagens:</h4>
+        </div>
+    </div>
+
+    <!-- JavaScript para manipular o mural -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            loadMessages(); // Carregar as mensagens ao carregar a página
+
+            const form = document.getElementById("messageForm");
+            form.addEventListener("submit", function(event) {
+                event.preventDefault();
+                addMessage();
+            });
+        });
+
+        function loadMessages() {
+            const messages = JSON.parse(localStorage.getItem('muralMessages')) || [];
+            const mural = document.getElementById('mural');
+            mural.innerHTML = '<h4 class="text-center">Mensagens:</h4>';
+            messages.forEach(function(msg) {
+                mural.innerHTML += `
+                    <div class="mural-item">
+                        <h5>${msg.name}</h5>
+                        <p>${msg.message}</p>
+                    </div>`;
+            });
+        }
+
+        function addMessage() {
+            const name = document.getElementById('name').value;
+            const message = document.getElementById('message').value;
+
+            const messages = JSON.parse(localStorage.getItem('muralMessages')) || [];
+            messages.push({ name, message });
+            localStorage.setItem('muralMessages', JSON.stringify(messages));
+
+            loadMessages(); // Atualiza o mural
+
+            document.getElementById('messageForm').reset(); // Limpa o formulário
+        }
+    </script>
+
+</body>
+</html>

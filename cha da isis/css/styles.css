@@ -42,7 +42,7 @@
   --bs-danger: #dc3545;
   --bs-light: #f8f9fa;
   --bs-dark: #212529;
-  --bs-primary-rgb: 201,193,229;
+  --bs-primary-rgb: 200,162,200;
   --bs-secondary-rgb: 138,124,155;
   --bs-success-rgb: 25, 135, 84;
   --bs-info-rgb: 13, 202, 240;
@@ -592,7 +592,7 @@ progress {
   margin-top: -1rem;
   margin-bottom: 1rem;
   font-size: 0.875em;
-  color: #6c757d;
+  color: #7d746c;
 }
 .blockquote-footer::before {
   content: "— ";
@@ -11000,7 +11000,7 @@ html {
   cursor: pointer;
   position: relative;
   display: block;
-  max-width: 25rem;
+  max-width: 15rem;
   border-radius: 0.5rem;
   overflow: hidden;
 }
@@ -11038,12 +11038,12 @@ html {
 .footer {
   padding-top: 5rem;
   padding-bottom: 5rem;
-  background-color: #2c3e50;
+  background-color: #c8a2c8;
   color: #fff;
 }
 
 .copyright {
-  background-color: #1a252f;
+  background-color: #8a7c9b;
 }
 
 

@@ -53,24 +53,17 @@
         }
 
         // Confirm diaper selection
-        function confirmDiaper(size) {
-            const confirmation = confirm("Você dará de presente um pacote de fralda do tamanho " + size + "?");
-            if (confirmation) {
-                const counters = getCounters();
-                counters[size]++;
-                updateCounters(counters);
-                alert(`Você confirmou o presente de um pacote de fralda do tamanho ${size}! Muito obrigada!`);
-            }
-        }
+        // Confirm diaper selection
+    window.confirmDiaper = function(size) {
+    const confirmation = confirm("Você dará de presente um pacote de fralda do tamanho " + size + "?");
+    if (confirmation) {
+        const counters = getCounters();
+        counters[size]++;
+        updateCounters(counters);
+        alert(`Você confirmou o presente de um pacote de fralda do tamanho ${size}! Muito obrigada!`);
+    }
+};
 
-        // Reset counters
-        function resetCounters() {
-            if (confirm("Tem certeza que deseja resetar todos os contadores?")) {
-                const initialCounters = { P: 0, M: 0, G: 0, GG: 0 };
-                updateCounters(initialCounters);
-                alert("Os contadores foram resetados!");
-            }
-        }
 
         // Get counters from local storage (for fallback)
         function getCounters() {
@@ -314,8 +307,100 @@
     <div class="copyright py-4 text-center text-white">
         <p class="text-muted small mb-0">&copy; 2024 - Chá da Ísis. Todos os direitos reservados.</p>
     </div>
+            <!-- Bootstrap core JS-->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- Core theme JS-->
+            <script src="js/scripts.js"></script>
+            <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+            <!-- * *                               SB Forms JS                               * *-->
+            <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+            <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+            <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
 </body>
 </html>
 
+
+
+
+
+<!-- 
+    // Configuração Firebase
+    // var firebaseConfig = {
+    //   apiKey: "SUA_API_KEY",
+    //   authDomain: "seu-projeto.firebaseapp.com",
+    //   databaseURL: "https://chadaisis-default-rtdb.firebaseio.com/",
+    //   projectId: "chaDaIsis",
+    //   storageBucket: "seu-projeto.appspot.com",
+    //   messagingSenderId: "seu-id",
+    //   appId: "seu-app-id"
+    // };
+    // firebase.initializeApp(firebaseConfig); -->
+<!-- <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAkHCwenPip12BQkCpy4IwnAlQboGyGg7I",
+    authDomain: "chadaisis.firebaseapp.com",
+    databaseURL: "https://chadaisis-default-rtdb.firebaseio.com",
+    projectId: "chadaisis",
+    storageBucket: "chadaisis.appspot.com",
+    messagingSenderId: "687075306152",
+    appId: "1:687075306152:web:9391246c0993166a16709d",
+    measurementId: "G-7DYGVP0DYM"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+
+    // Referência ao banco de dados
+var database = firebase.database();
+  
+    // Função de confirmação de fraldas
+    function confirmDiaper(size) {
+        const confirmation = confirm(`Você dará de presente um pacote de fralda do tamanho ${size}?`);
+        if (confirmation) {
+            // Atualizar o contador no Firebase
+            var ref = database.ref('diapers/' + size);
+            ref.transaction(function(count) {
+                return (count || 0) + 1;
+            });
+  
+            // Mostrar pop-up de agradecimento
+            alert(`Muito obrigado! Você confirmou o presente de um pacote de fralda do tamanho ${size}!`);
+        }
+    }
+  
+    // Carregar os contadores ao carregar a página
+    document.addEventListener('DOMContentLoaded', function() {
+        var sizes = ['P', 'M', 'G', 'GG'];
+        sizes.forEach(size => {
+            var ref = database.ref('diapers/' + size);
+            ref.on('value', function(snapshot) {
+                document.getElementById('counter-' + size.toLowerCase()).textContent = snapshot.val() + " pacotes";
+                updateTotalCounter();
+            });
+        });
+    });
+  
+    // Função para atualizar o contador total
+    function updateTotalCounter() {
+        var sizes = ['p', 'm', 'g', 'gg'];
+        let total = 0;
+  
+        sizes.forEach(size => {
+            total += parseInt(document.getElementById('counter-' + size).textContent) || 0;
+        });
+  
+        document.getElementById('total-counter').textContent = total;
+    }
+  </script> -->

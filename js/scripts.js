@@ -9,11 +9,8 @@
 
 window.addEventListener('DOMContentLoaded', event => {
 
-    document.addEventListener("DOMContentLoaded", function() {
-        loadCounters();
-    });
-
-       // Navbar shrink function
+    
+    // Navbar shrink function
     var navbarShrink = function () {
         const navbarCollapsible = document.body.querySelector('#mainNav');
         if (!navbarCollapsible) {

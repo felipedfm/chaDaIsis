@@ -54,21 +54,25 @@
 
         // Confirm diaper selection
         // Confirm diaper selection
-    window.confirmDiaper = function(size) {
+    window.confirmDiaper = function(size){
     const confirmation = confirm("Você dará de presente um pacote de fralda do tamanho " + size + "?");
     if (confirmation) {
-        const counters = getCounters();
-        counters[size]++;
-        updateCounters(counters);
-        alert(`Você confirmou o presente de um pacote de fralda do tamanho ${size}! Muito obrigada!`);
+        const countersRef = ref(db, 'diaperCounters');
+        // Obter os contadores diretamente do Firebase
+        get(countersRef).then((snapshot) => {
+            const counters = snapshot.val() || { P: 0, M: 0, G: 0, GG: 0 };
+            counters[size]++;
+            updateCounters(counters); // Atualizar Firebase
+            alert(`Você confirmou o presente de um pacote de fralda do tamanho ${size}! Muito obrigada!`);
+        });
     }
-};
+}
+
+    
 
 
         // Get counters from local storage (for fallback)
-        function getCounters() {
-            return JSON.parse(localStorage.getItem('diaperCounters')) || { P: 0, M: 0, G: 0, GG: 0 };
-        }
+
 
         // Load messages from Firebase
         function loadMessages() {
